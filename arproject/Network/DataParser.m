@@ -34,6 +34,48 @@ extern AppDelegate * appDelegate;
 }
 @end
 
+/**
+ *	@brief	微信登录获取 access_token
+ */
+@implementation WeiXinAccessToken
+@synthesize accessToken,expires,refreshToken,openid,scope;
+-(id)init
+{
+    self = [super init];    
+    return self;
+}
+-(void)dealloc
+{
+    FREEOBJECT(accessToken);
+    FREEOBJECT(refreshToken);
+    FREEOBJECT(openid);
+    FREEOBJECT(scope);
+    [super dealloc];
+}
+@end
+/**
+ *	@brief	微信用户数据
+ */
+@implementation WeiXinUserInfo
+@synthesize openid,nickname,province,sex,city,country,headimgurl,unionid;
+-(id)init
+{
+    self = [super init];
+    return self;
+}
+-(void)dealloc
+{
+    FREEOBJECT(openid);
+    FREEOBJECT(nickname);
+    FREEOBJECT(province);
+    FREEOBJECT(city);
+    FREEOBJECT(country);
+    FREEOBJECT(headimgurl);
+    FREEOBJECT(unionid);
+    [super dealloc];
+}
+@end
+
 @implementation UserInfoObj
 @synthesize userId,userName,userPwd,userAge,userSex,userHead,userNick,userWeixinId,isAdmin;
 -(void)dealloc
@@ -119,6 +161,63 @@ extern AppDelegate * appDelegate;
     }
     return resultObj;
 }
+
++(id)parseWeiXinAccessToken:(NSString *)_data
+{
+    
+    id obj = [_data JSONValue];
+    if(obj == nil)return nil;//json error
+    
+    if ([obj valueForKey:@"errcode"] == nil) {
+        WeiXinAccessToken * wxAccessToken = [[[WeiXinAccessToken alloc]init] autorelease];        
+        wxAccessToken.accessToken = [DataParser idToStr:obj key:@"access_token"];
+        wxAccessToken.expires = [DataParser idToInt:obj key:@"expires_in"];
+        wxAccessToken.refreshToken = [DataParser idToStr:obj key:@"refresh_token"];
+        wxAccessToken.openid = [DataParser idToStr:obj key:@"openid"];
+        wxAccessToken.scope = [DataParser idToStr:obj key:@"scope"];
+        return wxAccessToken;
+    }
+    else{
+        ErrorObject * tmp = [[ErrorObject alloc] init];
+        tmp.ErrorCode = [[obj valueForKey:@"errcode"] integerValue];
+        tmp.ErrorMsg = [NSString stringWithFormat:@"%@",[DataParser idToStr:obj key:@"errmsg"]];
+        return tmp;
+    }
+}
+
+
+/**
+ *	@brief	微信登录  通过access_token 和 openid 获取用户信息
+ *
+ *	@param 	_data 数据出参
+ *
+ *	@return
+ */
++(id)parseWeiXinUserInfo:(NSString *)_data
+{
+    id obj = [_data JSONValue];
+    if(obj == nil)return nil;//json error
+    
+    if ([obj valueForKey:@"errcode"] == nil) {
+        WeiXinUserInfo *wxUserInfo = [[[WeiXinUserInfo alloc]init] autorelease];
+        wxUserInfo.openid = [DataParser idToStr:obj key:@"openid"];
+        wxUserInfo.nickname = [DataParser idToStr:obj key:@"nickname"];
+        wxUserInfo.sex = [DataParser idToInt:obj key:@"sex"];
+        wxUserInfo.province = [DataParser idToStr:obj key:@"province"];
+        wxUserInfo.city = [DataParser idToStr:obj key:@"city"];
+        wxUserInfo.country = [DataParser idToStr:obj key:@"country"];
+        wxUserInfo.headimgurl = [DataParser idToStr:obj key:@"headimgurl"];
+        wxUserInfo.unionid = [DataParser idToStr:obj key:@"unionid"];
+        return wxUserInfo;
+    }
+    else{
+        ErrorObject * tmp = [[ErrorObject alloc] init];
+        tmp.ErrorCode = [[obj valueForKey:@"errcode"] integerValue];
+        tmp.ErrorMsg = [NSString stringWithFormat:@"%@",[DataParser idToStr:obj key:@"errmsg"]];
+        return tmp;
+    }
+}
+
 +(UserInfoObj*)parseUserInfo:(NSData *)_data
 {
     UserInfoObj * resultObj = nil;;
