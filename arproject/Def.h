@@ -16,6 +16,13 @@
 #define KLoginApi                   @"user/login"
 #define KRegistAPI                  @"user/register"
 
+
+/*微信 开放平台*/
+#define WeiXinChatAppID        	@"wx143cce0c2ffbd95d"
+#define WeiXinChatAppKey     	@"45a7367036b7f227c227041a51b82a4c"
+#define WeiXinPartnerId     	@"45a7367036b7f227c227041a51b82a4c"
+
+
 /*pub use*/
 #define R_W  0.2
 #define B_H  0.1

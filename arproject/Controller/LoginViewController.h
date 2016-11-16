@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "WXApi.h"
 
-@interface LoginViewController : BaseViewController<SZMGConnectDelegate>
+@interface LoginViewController : BaseViewController<SZMGConnectDelegate,WXApiDelegate>
 {
     UITextField * userNameField;
     UITextField * userPwdField;
