@@ -88,9 +88,26 @@ AppDelegate * appDelegate;//全局访问对象
         [topNav.view setCenter:CGPointMake(screenWidth*0.5, topNav.view.center.y)];
     } completion:^(BOOL isFinished){}];
 }
+#pragma mark --- 用户数据
 -(void)addUser:(NSString*)userId userObj:(UserInfoObj*)dataObj
 {
-    
+    if(STRNULL(dataObj.userId).length == 0)return;
+    NSString * infoPath = [ISSFileOp ReturnDocumentPath];
+    NSString * listPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
+    NSMutableDictionary * userList = nil;
+    if([[NSFileManager defaultManager] fileExistsAtPath:listPath]){
+        userList = [NSMutableDictionary dictionaryWithContentsOfFile:listPath];
+    }
+    else{
+        userList = [NSMutableDictionary dictionaryWithCapacity:1];
+    }
+    [userList setValue:dataObj.userId forKey:dataObj.userId];
+    [userList writeToFile:listPath atomically:YES];
+    //详情
+    NSString * detailPath = [NSString stringWithFormat:@"%@/%@.plist",infoPath,dataObj.userId];
+    NSMutableDictionary * detailDict = [NSMutableDictionary dictionaryWithCapacity:1];
+    [detailPath setValue:[dataObj toJson] forKey:@"jsonStr"];
+    [detailDict writeToFile:detailPath atomically:YES];
 }
 -(void)removeUser:(NSString*)userId
 {
@@ -98,7 +115,15 @@ AppDelegate * appDelegate;//全局访问对象
 }
 -(void)getUserList
 {
-    NSDictionary * userList = [NSDictionary dictionaryWithContentsOfFile:@""];
+    NSString * infoPath = [ISSFileOp ReturnDocumentPath];
+    infoPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
+    NSMutableDictionary * userList = nil;
+    if([[NSFileManager defaultManager] fileExistsAtPath:infoPath]){
+        userList = [NSMutableDictionary dictionaryWithContentsOfFile:infoPath];
+    }
+    else{
+        DEBUG_NSLOG(@"userlist为空");
+    }
 }
 
 

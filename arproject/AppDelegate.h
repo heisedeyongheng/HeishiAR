@@ -16,8 +16,6 @@
     UINavigationController * topNav;
     UIAlertView * gAlertView;
     
-    NSDictionary * userList;
-    NSDictionary * curUser;
 }
 @property (retain, nonatomic) UIWindow *window;
 @property float screenWidth;

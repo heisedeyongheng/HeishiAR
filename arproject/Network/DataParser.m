@@ -7,11 +7,83 @@
 //
 
 #import "DataParser.h"
+#import <objc/runtime.h>
 #import "JSON.h"
 #import "Def.h"
 #import "AppDelegate.h"
 
 extern AppDelegate * appDelegate;
+
+
+@implementation DataModel
+-(NSString*)toJson
+{
+    NSString * result = @"";
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    id sClass = self.class;
+    unsigned int outCount, i;
+    objc_property_t * properties = class_copyPropertyList(sClass, &outCount);//获取该类的所有属性
+    for (i = 0; i < outCount; i++)
+    {
+        objc_property_t property = properties[i];
+        NSString * propertyName = [[NSString alloc] initWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
+        id propertyValue = [self valueForKey:(NSString *)propertyName];
+        if(propertyValue != nil){
+            if([propertyValue isKindOfClass:[NSString class]])
+                [dict setValue:propertyValue forKey:propertyName];
+            else if([propertyValue isKindOfClass:[NSMutableArray class]]){
+                NSMutableArray * jsonArr = [[NSMutableArray alloc] init];
+                NSMutableArray * arr = (NSMutableArray*)propertyValue;
+                for(id obj in arr){
+                    if([obj isKindOfClass:[DataModel class]]){
+                        NSString * json = [(DataModel*)obj toJson];
+                        [jsonArr addObject:json];
+                    }
+                }
+                [dict setValue:jsonArr forKey:propertyName];
+                [jsonArr release];
+            }
+            else{
+                [dict setValue:propertyValue forKey:propertyName];
+            }
+        }
+        [propertyName release];
+    }
+    result = [dict JSONRepresentation];
+    [dict release];
+    return result;
+}
+-(void)setDataByJson:(NSString *)jsonStr
+{
+    id obj = [jsonStr JSONValue];
+    NSArray * allKeys = [obj allKeys];
+    for(NSString * key in allKeys){
+        id valueObj = [obj valueForKey:key];
+        if([valueObj isKindOfClass:[NSDictionary class]]){
+            NSDictionary * dict = (NSDictionary*)valueObj;
+            for(int i=0;i<dict.count;i++){
+                NSString * str = (NSString*)[dict.allValues objectAtIndex:i];
+                [self setArrByJson:key valueStr:str];
+            }
+        }
+        else if([valueObj isKindOfClass:[NSArray class]]){
+            NSArray * arr = (NSArray*)valueObj;
+            for(int i=0;i<arr.count;i++){
+                NSString * str = (NSString*)[arr objectAtIndex:i];
+                [self setArrByJson:key valueStr:str];
+            }
+        }
+        else{
+            [self setValue:valueObj forKey:key];
+        }
+    }
+}
+-(void)setArrByJson:(NSString *)keyStr valueStr:(NSString *)valueStr
+{
+    //this method need subclass to overwrite
+}
+@end
+
 
 @implementation ErrorObject
 @synthesize ErrorCode;
