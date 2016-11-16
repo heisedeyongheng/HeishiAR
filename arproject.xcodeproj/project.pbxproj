@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C90B8DBD1DDB44D00001C91B /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C90B8DB41DDB44D00001C91B /* libWeChatSDK.a */; };
-		C90B8DBE1DDB44D00001C91B /* WXPay.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B8DB81DDB44D00001C91B /* WXPay.m */; };
-		C90B8DBF1DDB44D00001C91B /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C90B8DBA1DDB44D00001C91B /* libWeChatSDK.a */; };
+		1849A4DA1DDC32C80066BAB3 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1849A4D11DDC32C80066BAB3 /* libWeChatSDK.a */; };
+		1849A4DB1DDC32C80066BAB3 /* WXPay.m in Sources */ = {isa = PBXBuildFile; fileRef = 1849A4D51DDC32C80066BAB3 /* WXPay.m */; };
+		1849A4DC1DDC32C80066BAB3 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1849A4D71DDC32C80066BAB3 /* libWeChatSDK.a */; };
 		C90B8DC21DDB4C0D0001C91B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90B8DC11DDB4C0D0001C91B /* CFNetwork.framework */; };
 		C90B8DC41DDB4C9A0001C91B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90B8DC31DDB4C9A0001C91B /* SystemConfiguration.framework */; };
 		C90B8DC61DDB4CA30001C91B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C90B8DC51DDB4CA30001C91B /* libz.tbd */; };
@@ -59,14 +59,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C90B8DB41DDB44D00001C91B /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
-		C90B8DB51DDB44D00001C91B /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
-		C90B8DB61DDB44D00001C91B /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
-		C90B8DB71DDB44D00001C91B /* WXPay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXPay.h; sourceTree = "<group>"; };
-		C90B8DB81DDB44D00001C91B /* WXPay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXPay.m; sourceTree = "<group>"; };
-		C90B8DBA1DDB44D00001C91B /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
-		C90B8DBB1DDB44D00001C91B /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
-		C90B8DBC1DDB44D00001C91B /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		1849A4D11DDC32C80066BAB3 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		1849A4D21DDC32C80066BAB3 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		1849A4D31DDC32C80066BAB3 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		1849A4D41DDC32C80066BAB3 /* WXPay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXPay.h; sourceTree = "<group>"; };
+		1849A4D51DDC32C80066BAB3 /* WXPay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXPay.m; sourceTree = "<group>"; };
+		1849A4D71DDC32C80066BAB3 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		1849A4D81DDC32C80066BAB3 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		1849A4D91DDC32C80066BAB3 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		C90B8DC01DDB474E0001C91B /* AR-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AR-Prefix.pch"; sourceTree = "<group>"; };
 		C90B8DC11DDB4C0D0001C91B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C90B8DC31DDB4C9A0001C91B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -155,46 +155,46 @@
 			files = (
 				C90B8DCF1DDB4CE70001C91B /* libsqlite3.tbd in Frameworks */,
 				C90B8DCD1DDB4CDB0001C91B /* libc++.tbd in Frameworks */,
+				1849A4DC1DDC32C80066BAB3 /* libWeChatSDK.a in Frameworks */,
+				1849A4DA1DDC32C80066BAB3 /* libWeChatSDK.a in Frameworks */,
 				C90B8DCA1DDB4CB40001C91B /* CoreTelephony.framework in Frameworks */,
 				C90B8DC81DDB4CAE0001C91B /* Security.framework in Frameworks */,
 				C90B8DC61DDB4CA30001C91B /* libz.tbd in Frameworks */,
 				C90B8DC41DDB4C9A0001C91B /* SystemConfiguration.framework in Frameworks */,
 				C90B8DC21DDB4C0D0001C91B /* CFNetwork.framework in Frameworks */,
-				C90B8DBF1DDB44D00001C91B /* libWeChatSDK.a in Frameworks */,
-				C90B8DBD1DDB44D00001C91B /* libWeChatSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C90B8DB21DDB44D00001C91B /* SDK */ = {
+		1849A4CF1DDC32C80066BAB3 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
-				C90B8DB31DDB44D00001C91B /* weixin */,
-				C90B8DB91DDB44D00001C91B /* weixin-iphonesimulator */,
+				1849A4D01DDC32C80066BAB3 /* weixin */,
+				1849A4D61DDC32C80066BAB3 /* weixin-iphonesimulator */,
 			);
 			path = SDK;
 			sourceTree = "<group>";
 		};
-		C90B8DB31DDB44D00001C91B /* weixin */ = {
+		1849A4D01DDC32C80066BAB3 /* weixin */ = {
 			isa = PBXGroup;
 			children = (
-				C90B8DB41DDB44D00001C91B /* libWeChatSDK.a */,
-				C90B8DB51DDB44D00001C91B /* WXApi.h */,
-				C90B8DB61DDB44D00001C91B /* WXApiObject.h */,
-				C90B8DB71DDB44D00001C91B /* WXPay.h */,
-				C90B8DB81DDB44D00001C91B /* WXPay.m */,
+				1849A4D11DDC32C80066BAB3 /* libWeChatSDK.a */,
+				1849A4D21DDC32C80066BAB3 /* WXApi.h */,
+				1849A4D31DDC32C80066BAB3 /* WXApiObject.h */,
+				1849A4D41DDC32C80066BAB3 /* WXPay.h */,
+				1849A4D51DDC32C80066BAB3 /* WXPay.m */,
 			);
 			path = weixin;
 			sourceTree = "<group>";
 		};
-		C90B8DB91DDB44D00001C91B /* weixin-iphonesimulator */ = {
+		1849A4D61DDC32C80066BAB3 /* weixin-iphonesimulator */ = {
 			isa = PBXGroup;
 			children = (
-				C90B8DBA1DDB44D00001C91B /* libWeChatSDK.a */,
-				C90B8DBB1DDB44D00001C91B /* WXApi.h */,
-				C90B8DBC1DDB44D00001C91B /* WXApiObject.h */,
+				1849A4D71DDC32C80066BAB3 /* libWeChatSDK.a */,
+				1849A4D81DDC32C80066BAB3 /* WXApi.h */,
+				1849A4D91DDC32C80066BAB3 /* WXApiObject.h */,
 			);
 			path = "weixin-iphonesimulator";
 			sourceTree = "<group>";
@@ -348,7 +348,7 @@
 		C9FBF2091DD7346F00D378F5 /* arproject */ = {
 			isa = PBXGroup;
 			children = (
-				C90B8DB21DDB44D00001C91B /* SDK */,
+				1849A4CF1DDC32C80066BAB3 /* SDK */,
 				C917102F1DD75A1200EB232D /* JSON */,
 				C91710271DD756B700EB232D /* Images */,
 				C9170FFF1DD7548800EB232D /* CustomView */,
@@ -462,7 +462,7 @@
 				C91710241DD7548800EB232D /* SCGIFImageView.m in Sources */,
 				C917101D1DD7548800EB232D /* CacheManager.m in Sources */,
 				C91710451DD75A1200EB232D /* SBJsonStreamWriter.m in Sources */,
-				C90B8DBE1DDB44D00001C91B /* WXPay.m in Sources */,
+				1849A4DB1DDC32C80066BAB3 /* WXPay.m in Sources */,
 				C91710201DD7548800EB232D /* HighlightImageView.m in Sources */,
 				C91710431DD75A1200EB232D /* SBJsonBase.m in Sources */,
 				C91710251DD7548800EB232D /* DataParser.m in Sources */,
@@ -584,6 +584,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/arproject/SDK/weixin-iphonesimulator",
+					"$(PROJECT_DIR)/arproject/SDK/weixin",
 				);
 				OTHER_LDFLAGS = (
 					"-Objc",
@@ -609,6 +610,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/arproject/SDK/weixin",
+					"$(PROJECT_DIR)/arproject/SDK/weixin-iphonesimulator",
 				);
 				OTHER_LDFLAGS = (
 					"-Objc",
