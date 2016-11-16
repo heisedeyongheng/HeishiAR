@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WXApi.h"
+#import "DataParser.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate>
 {
     UINavigationController * mainNav;
     UINavigationController * topNav;
@@ -27,5 +29,9 @@
 -(void)showTopNav:(BOOL)isAnim;
 -(void)showMsg:(NSString *)msg hiddenTime:(NSTimeInterval)time;
 -(void)showAlertOKWithMessage:(NSString *)msg;
+
+-(void)addUser:(NSString*)userId userObj:(UserInfoObj*)dataObj;
+-(void)removeUser:(NSString*)userId;
+-(void)getUserList;
 @end
 

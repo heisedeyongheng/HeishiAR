@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-#import "WXApi.h"
 
-@interface LoginViewController : BaseViewController<SZMGConnectDelegate,WXApiDelegate>
+#define WXOPENID_KEY        @"wxopenid"
+#define WXUNIONID_KEY       @"wxunionid"
+#define WXNICK_KEY          @"wxnick"
+#define WXFACE_KEY          @"wxface"
+
+@interface LoginViewController : BaseViewController<SZMGConnectDelegate>
 {
     UITextField * userNameField;
     UITextField * userPwdField;
 }
++(NSString*)wxLoginOkNotifyKey;
 @end

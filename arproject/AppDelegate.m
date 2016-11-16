@@ -10,6 +10,7 @@
 #import "Def.h"
 #import "CamViewController.h"
 #import "MainViewController.h"
+#import "LoginViewController.h"
 
 AppDelegate * appDelegate;//全局访问对象
 
@@ -34,6 +35,8 @@ AppDelegate * appDelegate;//全局访问对象
     topNav = [[UINavigationController alloc] initWithNibName:nil bundle:nil];
     [self.window addSubview:topNav.view];
     [self hideTopNav:NO];
+    
+    [self initWechat];
     return YES;
 }
 
@@ -84,6 +87,18 @@ AppDelegate * appDelegate;//全局访问对象
     [UIView animateWithDuration:(isAnim ? 0.3 : 0) animations:^(){
         [topNav.view setCenter:CGPointMake(screenWidth*0.5, topNav.view.center.y)];
     } completion:^(BOOL isFinished){}];
+}
+-(void)addUser:(NSString*)userId userObj:(UserInfoObj*)dataObj
+{
+    
+}
+-(void)removeUser:(NSString*)userId
+{
+    
+}
+-(void)getUserList
+{
+    NSDictionary * userList = [NSDictionary dictionaryWithContentsOfFile:@""];
 }
 
 
@@ -136,5 +151,93 @@ AppDelegate * appDelegate;//全局访问对象
         [gAlertView release];
         gAlertView = nil;
     }
+}
+
+
+#pragma mark - handleOpenURL
+- (BOOL)application:(UIApplication *)application  handleOpenURL:(NSURL *)url{
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+        return [WXApi handleOpenURL:url delegate:self];
+}
+//wechat
+-(void)initWechat
+{
+    //向微信注册
+    [WXApi registerApp:WeiXinChatAppID];
+}
+#pragma mark - 微信 and QQ QQApiInterface Delegate
+-(void)onReq:(id)req
+{
+    
+}
+
+-(void)onResp:(id)resp
+{
+    //-----------微信授权
+    if ([resp isKindOfClass:[SendAuthResp class]]) {
+        SendAuthResp *reponse = (SendAuthResp *) resp;
+        if ([reponse.state isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
+            NSString *urlString = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",WeiXinChatAppID,WeiXinChatAppKey,reponse.code];
+            NSString * strReturn = [self requestWeiXinWithURL:urlString];
+            
+            DEBUG_NSLOG(@" Weixin access_token result =======>>>>>> %@",strReturn);
+            id tmpWXData = [DataParser parseWeiXinAccessToken:strReturn];
+            if ([tmpWXData isKindOfClass:[WeiXinAccessToken class]]) {
+                
+                //-----------获取用户个人信息
+                WeiXinAccessToken *aWXData = (WeiXinAccessToken *)tmpWXData;
+                NSString *urlForUserInfoString = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/userinfo?access_token=%@&openid=%@",aWXData.accessToken, aWXData.openid];
+                NSString *strUserInfoReturn = [self requestWeiXinWithURL:urlForUserInfoString];
+                id tmpWXUserInfoData = [DataParser parseWeiXinUserInfo:strUserInfoReturn];
+                
+                if ([tmpWXUserInfoData isKindOfClass:[WeiXinUserInfo class]]){
+                    WeiXinUserInfo *aUserInfoData = (WeiXinUserInfo *)tmpWXUserInfoData;
+                    DEBUG_NSLOG(@"unionid  =====>>>  %@",aUserInfoData.unionid);
+                    DEBUG_NSLOG(@"nickname  =====>>>  %@",aUserInfoData.nickname);
+                    DEBUG_NSLOG(@"headimgurl  =====>>>  %@",aUserInfoData.headimgurl);
+                    NSDictionary * dict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:aUserInfoData.unionid,aUserInfoData.openid,aUserInfoData.nickname,aUserInfoData.headimgurl, nil] forKeys:[NSArray arrayWithObjects:WXUNIONID_KEY,WXOPENID_KEY,WXNICK_KEY,WXFACE_KEY, nil]];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:[LoginViewController wxLoginOkNotifyKey] object:dict];
+                }
+            }
+        }
+    }
+    //-------------- 分享成功
+    else if ([resp isKindOfClass:[BaseResp class]])
+    {
+        BaseResp *reponse = (BaseResp *) resp;
+        DEBUG_NSLOG(@"微信  %s----%d   type  == %d",__FUNCTION__,reponse.errCode , reponse.type);
+        if (reponse.errCode == WXSuccess) {
+            if (reponse.type == WXSceneSession) {
+                
+            }
+            else if (reponse.type == WXSceneTimeline){
+                
+            }
+        }
+    }
+}
+
+-(NSString *)requestWeiXinWithURL:(NSString *)aUrlString
+{
+    NSString *urlString = [aUrlString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+    DEBUG_NSLOG(@" Weixin access_token  =======>>>>>> %@",urlString);
+    // 实例化NSMutableURLRequest，并进行参数配置
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    [request setURL:[NSURL URLWithString: urlString]];
+    [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
+    [request setTimeoutInterval: 60];
+    [request setHTTPShouldHandleCookies:FALSE];
+    [request setHTTPMethod:@"GET"];
+    
+    // Response对象，用来得到返回后的数据，比如，用statusCode==200 来判断返回正常
+    NSHTTPURLResponse *response;
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request
+                                               returningResponse:&response error:nil];
+    // 处理返回的数据
+    NSString *strReturn = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
+    return strReturn;
 }
 @end

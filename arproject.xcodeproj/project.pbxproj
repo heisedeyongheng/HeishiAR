@@ -503,8 +503,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jiayuan Xu (3FAEHNP7VC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jiayuan Xu (3FAEHNP7VC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 书琼 任 (8BPNZ9F3RJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 书琼 任 (8BPNZ9F3RJ)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -526,7 +526,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "4ebec2df-e58e-4246-86e3-de06dd78d908";
+				PROVISIONING_PROFILE = "fa33ec94-0786-4cce-b828-ae45b4da284a";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -548,8 +548,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jiayuan Xu (3FAEHNP7VC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jiayuan Xu (3FAEHNP7VC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 书琼 任 (8BPNZ9F3RJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 书琼 任 (8BPNZ9F3RJ)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -564,7 +564,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "4ebec2df-e58e-4246-86e3-de06dd78d908";
+				PROVISIONING_PROFILE = "fa33ec94-0786-4cce-b828-ae45b4da284a";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -576,7 +576,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jiayuan Xu (3FAEHNP7VC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 书琼 任 (8BPNZ9F3RJ)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "arproject/Ar-Prefix.pch";
 				INFOPLIST_FILE = arproject/Info.plist;
@@ -592,7 +592,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hish.arproject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4ebec2df-e58e-4246-86e3-de06dd78d908";
+				PROVISIONING_PROFILE = "fa33ec94-0786-4cce-b828-ae45b4da284a";
 			};
 			name = Debug;
 		};
@@ -602,7 +602,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jiayuan Xu (3FAEHNP7VC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 书琼 任 (8BPNZ9F3RJ)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "arproject/Ar-Prefix.pch";
 				INFOPLIST_FILE = arproject/Info.plist;
@@ -618,7 +618,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hish.arproject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4ebec2df-e58e-4246-86e3-de06dd78d908";
+				PROVISIONING_PROFILE = "fa33ec94-0786-4cce-b828-ae45b4da284a";
 			};
 			name = Release;
 		};

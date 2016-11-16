@@ -18,9 +18,9 @@
 
 
 /*微信 开放平台*/
-#define WeiXinChatAppID        	@"wx143cce0c2ffbd95d"
-#define WeiXinChatAppKey     	@"45a7367036b7f227c227041a51b82a4c"
-#define WeiXinPartnerId     	@"45a7367036b7f227c227041a51b82a4c"
+#define WeiXinChatAppID        	@"wxdfd9bcd3969711c2"
+#define WeiXinChatAppKey     	@"bd5b5f9159834d2edf2a363979a1687e"
+#define WeiXinPartnerId     	@"1231788102"
 
 
 /*pub use*/
