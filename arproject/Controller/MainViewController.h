@@ -10,7 +10,7 @@
 #import "ISSAsyncImageView.h"
 #import "TBViews.h"
 
-@interface MainViewController : BaseViewController
+@interface MainViewController : BaseViewController<ISSAsyncImageViewDelegate>
 {
     //背景
     UIButton * bgMaskView;

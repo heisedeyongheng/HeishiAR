@@ -9,7 +9,9 @@
 #import "SZMGConnect.h"
 #import "NSString+SBJSON.h"
 #import "Def.h"
+#import "AppDelegate.h"
 
+extern AppDelegate * appDelegate;
 @implementation SZMGConnect
 @synthesize datadelegate;
 -(id)init
@@ -109,7 +111,7 @@
     cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelBtn setImage:[UIImage imageNamed:@"image_Cancel"] forState:UIControlStateNormal];
     [cancelBtn setFrame:CGRectMake(customView.frame.size.width-25, 7.5, 25, 25)];
-    [cancelBtn addTarget:self action:@selector(onCancelBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [cancelBtn addTarget:self action:@selector(onCancelBtn:) forControlEvents:UIControlEventTouchUpInside];
     [customView addSubview:cancelBtn];
     
     waitProcess.customView = customView;
@@ -121,27 +123,15 @@
 }
 -(void)dealloc
 {
-    DEBUG_NSLOG(@"%s",__FUNCTION__);
-    [netConnection cancel];
-    [netConnection release];
-    netConnection = nil;
-    
-    if(nil != postStr)
-    {
-        [postStr release];
-        postStr = nil;
-    }
-    if(nil != connectionUrl)
-    {
-        [connectionUrl release];
-        connectionUrl = nil;
-    }
-    if(nil != netData)
-    {
-        [netData release];
-        netData = nil;
-    }
+    [formValues removeAllObjects];
+    [formFiles removeAllObjects];
+    FREEOBJECT(formFiles);
+    FREEOBJECT(formValues);
     FREEOBJECT(datadelegate);
+    FREEOBJECT(mainRequest);
+    FREEOBJECT(postStr);
+    FREEOBJECT(connectionUrl);
+    
     if(waitProcess.superview != nil)
         [waitProcess removeFromSuperview];
     FREEOBJECT(waitProcess);
@@ -149,74 +139,136 @@
         [processBar removeFromSuperview];
     FREEOBJECT(processBar);
     [super dealloc];
+    DEBUG_NSLOG(@"Finish  %s",__FUNCTION__);
 }
 
 
-#pragma mark -
-#pragma network delegate
+
+-(void)tryToRelease{
+    DEBUG_NSLOG(@"%s",__FUNCTION__);
+    @try {
+        [self release];
+    }
+    @catch (NSException *exception) {
+        DEBUG_NSLOG(@"%@",exception);
+    }
+}
 -(void)startRequest
 {
+    DEBUG_NSLOG(@"%s",__FUNCTION__);
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    netData = [[NSMutableData alloc] init];
+    isCancel = NO;
     
-    NSMutableURLRequest *request=[[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:connectionUrl]];
+    NSString * urlLow = [connectionUrl lowercaseString];
+    FREEOBJECT(connectionUrl);
+    connectionUrl = [urlLow copy];
+    mainRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:connectionUrl]];
+    [mainRequest addRequestHeader:@"Content-Type" value:@"application/json"];
     
-    long postLength = 0;
+    [ASIHTTPRequest setSessionCookies:nil];
     if(isPost)
     {
         NSMutableString * jsonData = [self postStrToJson:postStr];
         NSData * data = [jsonData  dataUsingEncoding:NSUTF8StringEncoding];
-        [request setHTTPBody:data];
-        [request setHTTPMethod:@"POST"];
-        postLength = data.length;
-        DEBUG_NSLOG(@"\n\n====================    network Request   start\n url : %@\n POST Data:%@\n ====================    network Request   end\n",connectionUrl,postStr);
+        [mainRequest appendPostData:data];
+        [mainRequest setRequestMethod:@"POST"];
+        DEBUG_NSLOG(@"\n\n====================    network Request   start\n\n url : %@\n POST Data:%@\n\n====================    network Request   end\n\n",connectionUrl,jsonData);
     }
     else
     {
-        [request setHTTPMethod:@"GET"];
-        DEBUG_NSLOG(@"\n\n====================    network Request \n  start\n\n url : %@\n  GET\n\n====================    network Request   end\n\n",connectionUrl);
+        [mainRequest setRequestMethod:@"GET"];
+        DEBUG_NSLOG(@"\n\n====================    network Request   start\n\n url : %@\n  GET\n\n====================    network Request   end\n\n",connectionUrl);
     }
-//    [request setCachePolicy:NSURLCacheStorageNotAllowed];
-//    [request setValue:@"XMLHttpRequest" forHTTPHeaderField:@"X-Requested-With"];
-//    [request setValue:[NSString stringWithFormat:@"%ld",postLength] forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setTimeoutInterval:NETTIME];
-    netConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain];
+    [mainRequest setDelegate:self];
+    [mainRequest startAsynchronous];
+
+    [self retain];
+}
+
+-(void)startRequestForm
+{
+    DEBUG_NSLOG(@"%s",__FUNCTION__);
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    [request release];
-    [netConnection release];
+    isCancel = NO;
+    
+    NSString * urlLow = [connectionUrl lowercaseString];
+    FREEOBJECT(connectionUrl);
+    connectionUrl = [urlLow copy];
+    mainRequest = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:connectionUrl]];
+    ASIFormDataRequest * formRequest = (ASIFormDataRequest*)mainRequest;
+    [ASIHTTPRequest setSessionCookies:nil];
+    if(isPost)
+    {
+        id key;
+        NSEnumerator * enumerator = [formValues keyEnumerator];
+        while (key = [enumerator nextObject]) {
+            [formRequest addPostValue:[formValues valueForKey:key] forKey:key];
+        }
+        [formRequest addPostValue:[NSString stringWithFormat:@"%@",kAPIVersion] forKey:@"version"];
+        int imgIndex = 0;
+        enumerator = [formFiles keyEnumerator];
+        while (key = [enumerator nextObject]) {
+            [formRequest addFile:[formFiles objectForKey:key] forKey:key];
+            imgIndex++;
+        }
+        [formRequest setRequestMethod:@"POST"];
+    }
+    else
+    {
+        [mainRequest setRequestMethod:@"GET"];
+        DEBUG_NSLOG(@"\n\n====================    network Request   start\n\n url : %@\n  GET\n\n====================    network Request   end\n\n",connectionUrl);
+    }
+    [mainRequest setDelegate:self];
+    [mainRequest startAsynchronous];
+    
+    [self retain];
+}
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    // Use when fetching text data
+#ifdef DEBUG
+    NSString *responseString = [request responseString];
+    DEBUG_NSLOG(@"%s\n\nurl:%@\n\n>>>>>>>>>>>>>>>>>>>>>           response data:\n%@\n\n<<<<<<<<<<<<<<<<<<<<<<\n\n",__FUNCTION__,connectionUrl,responseString);
+#endif
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    NSData *responseData = [request responseData];
+    if(datadelegate != nil && [datadelegate respondsToSelector:@selector(onFinish:url:)]){
+        [datadelegate onFinish:responseData url:connectionUrl];
+    }
+    
     
     if(waitProcess != nil)
-        [waitProcess show:YES];
-}
-
--(void)onCancelBtn:(UIButton*)btn
-{
-    if(btn == nil)
-    {
-        DEBUG_NSLOG(@"now release");
-        [self release];
-    }
-    else
-    {
-        DEBUG_NSLOG(@"btn");
-        if(waitProcess != nil && !waitProcess.hidden)
-            [waitProcess hide:YES];
-        if(datadelegate && [datadelegate respondsToSelector:@selector(onCancel)])
-            [datadelegate performSelector:@selector(onCancel)];
-        if(netConnection != nil)
-            [netConnection cancel];
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [waitProcess hide:YES];
+    [cancelBtn setEnabled:NO];
+    
+    //    [self performSelector:@selector(tryToRelease) withObject:nil afterDelay:1];
+    [self tryToRelease];
+    
+    //服务器返回-2登录超时
+    NSString * result = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    id jsonObj = [result JSONValue];
+    if(jsonObj != nil){
+        NSInteger isSucess = [(NSString*)[jsonObj valueForKey:@"success"] intValue];
+        if(isSucess == -2){
+            
+        }
     }
 }
 
-- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
-    DEBUG_NSLOG(@"==============================  net error with url : %@  ==============================  \n\n error message:   %@ ============================== ",connectionUrl , error);
+    NSError *error = [request error];
+    DEBUG_NSLOG(@"%s =========================\n %@ \n=========================",__FUNCTION__ , error);
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    if([datadelegate respondsToSelector:@selector(onNetError:)])//给出网络失败提示
+    if (isCancel == YES) {
+        [self tryToRelease];
+        return;
+    }
+    if(datadelegate && [datadelegate respondsToSelector:@selector(onNetError:)])//给出网络失败提示
     {
         ErrorObject * EO = [[ErrorObject alloc] init];
         EO.ErrorMsg = nil;
@@ -225,56 +277,22 @@
     }
     else
     {
-        // [appDelegate showMsg:NSLocalizedString(@"NetFail",nil) hiddenTime:2];
-//        [appDelegate showMsg:NETERROR hiddenTime:2];
+        [appDelegate showMsg:@"网络错误" hiddenTime:2];
         DEBUG_NSLOG(@"didFailWithError but the class have no delege --onError");
     }
     if(waitProcess != nil)
         [waitProcess hide:YES];
     [cancelBtn setEnabled:NO];
     
-    [self retain];
-    [self performSelector:@selector(onCancelBtn:) withObject:nil afterDelay:1];//延后执行析构函数,防止cancelbtn和这个析构冲突
-}
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [netData appendData:data];
-    if(processBar != nil)
-    {
-        float percent = (data.length)/(float)totalLen;
-        [processBar setProcess:percent];
-    }
+    [self performSelector:@selector(tryToRelease) withObject:nil afterDelay:0.5];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-#if DEBUG
-    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-    NSInteger responseStatusCode = [httpResponse statusCode];
-    DEBUG_NSLOG(@"status code:%d",(int)responseStatusCode);
+- (void)request:(ASIHTTPRequest *)request didReceiveResponseHeaders:(NSDictionary *)responseHeaders{
+#ifdef DEBUG
+    NSString *statusMessage = [request responseStatusMessage];
+    DEBUG_NSLOG(@"\n\n====================\n\n    network Request status Message : %@ \n\nresponse Headers :\n\n%@\n\n====================\n\n",statusMessage,responseHeaders);
 #endif
-    [netData setLength:0];
-    totalLen = [response expectedContentLength];
-}
-
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-#if DEBUG
-    NSString *result = [[[NSString alloc] initWithData:netData encoding:NSUTF8StringEncoding] autorelease];
-    DEBUG_NSLOG(@"\n\n====================    network response   start  \n\n net url:%@ \n\nnetdata:\n\n%@\n\n====================    network response   end  \n\n",connectionUrl,result);
-#endif
-    if([datadelegate respondsToSelector:@selector(onFinish:url:)])
-        [datadelegate onFinish:netData url:connectionUrl];
     
-    if(waitProcess != nil)
-        [waitProcess hide:YES];
-    [cancelBtn setEnabled:NO];
-    
-    [self retain];
-    [self performSelector:@selector(onCancelBtn:) withObject:nil afterDelay:1.5];
-    //延后执行析构函数,防止此时cancelbtn异步执行click事件和这个析构冲突,下一次换一种联网方式，不采用网络完毕立即释放内存的方式，否则对close支持不完美
 }
 
 
@@ -358,6 +376,28 @@
         [self performSelectorOnMainThread:@selector(startRequest) withObject:nil waitUntilDone:NO];
     else
         [self startRequest];
+}
+-(void)httpModifyUserInfo:(NSString *)userId nick:(NSString *)nick head:(NSString *)head pwd:(NSString *)pwd oldpwd:(NSString *)oldpwd
+{
+    NSString * url = [[NSString alloc] initWithFormat:@"%@%@",KServerURL,KModifyInfoApi];
+    connectionUrl = [url copy];
+    [url release];
+    
+    formValues = [[NSMutableDictionary alloc] init];
+    formFiles = [[NSMutableDictionary alloc] init];
+    
+    if(STRNULL(userId).length > 0)
+        [formValues setValue:userId forKey:@"id"];
+    if(STRNULL(nick).length > 0)
+        [formValues setValue:nick forKey:@"nickname"];
+    if(STRNULL(head).length > 0)
+        [formFiles setValue:head forKey:@"head"];
+    if(STRNULL(pwd).length > 0)
+        [formValues setValue:pwd forKey:@"password"];
+    if(STRNULL(oldpwd).length > 0)
+        [formValues setValue:oldpwd forKey:@"oldpwd"];
+    isPost = YES;
+    [self startRequestForm];
 }
 @end
 
@@ -530,7 +570,6 @@
     }
     return encoding;
 }
-
 @end
 
 @implementation NSString (Base64Addition)

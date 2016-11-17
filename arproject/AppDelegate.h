@@ -32,5 +32,6 @@
 -(void)removeUser:(NSString*)userId;
 -(UserInfoObj*)getCurUser;
 -(void)setCurUser:(UserInfoObj*)dataObj;
+-(BOOL)clearCurUser;
 @end
 

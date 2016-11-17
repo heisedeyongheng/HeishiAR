@@ -49,7 +49,7 @@ extern AppDelegate * appDelegate;
     button = nil;
     requestUrl = nil;
     waitProgress = nil;
-    defaultImageName = @"defaultHospital";
+    defaultImageName = @"defaultPerson";
     
     totalLen = 0;
     maxWidth = 1500;
@@ -1120,7 +1120,7 @@ extern AppDelegate * appDelegate;
 //    DEBUG_NSLOG(@"%s  , file name %@ , _cacheData.length ==>>> %d bytes",__FUNCTION__,_cacheName,_cacheData.length);
     
     if (_cacheData.length > 0) {
-        NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
+        NSString *documentsDirectory = [ISSFileOp ReturnLibFilePath];
         NSString *tmpFolder = [documentsDirectory stringByAppendingPathComponent:AsyncImgFILE_FOLDER];
         
         
@@ -1142,7 +1142,7 @@ extern AppDelegate * appDelegate;
 }
 -(void)delCache:(NSString*)_cacheName
 {
-    NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
+    NSString *documentsDirectory = [ISSFileOp ReturnLibFilePath];
     NSString *tmpFolder = [documentsDirectory stringByAppendingPathComponent:AsyncImgFILE_FOLDER];
     tmpFolder = [tmpFolder stringByAppendingPathComponent:_cacheName];
 	if([[NSFileManager defaultManager] fileExistsAtPath:tmpFolder])
@@ -1155,7 +1155,7 @@ extern AppDelegate * appDelegate;
 {
     
     
-    NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
+    NSString *documentsDirectory = [ISSFileOp ReturnLibFilePath];
     NSString *tmpFolder = [documentsDirectory stringByAppendingPathComponent:AsyncImgFILE_FOLDER];
     tmpFolder = [tmpFolder stringByAppendingPathComponent:fileName];
     
@@ -1184,7 +1184,7 @@ extern AppDelegate * appDelegate;
 {
     
     
-    NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
+    NSString *documentsDirectory = [ISSFileOp ReturnLibFilePath];
     NSString *tmpFolder = [documentsDirectory stringByAppendingPathComponent:AsyncImgFILE_FOLDER];
     tmpFolder = [tmpFolder stringByAppendingPathComponent:_cacheName];
     NSData	*datasource = nil;
@@ -1198,7 +1198,7 @@ extern AppDelegate * appDelegate;
 
 +(void)deleteAllCache
 {
-    NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
+    NSString *documentsDirectory = [ISSFileOp ReturnLibFilePath];
     NSString *tmpFolder = [documentsDirectory stringByAppendingPathComponent:AsyncImgFILE_FOLDER];
     if ([[NSFileManager defaultManager] fileExistsAtPath:tmpFolder])
         [[NSFileManager defaultManager]removeItemAtPath:tmpFolder error:nil];
@@ -1207,7 +1207,7 @@ extern AppDelegate * appDelegate;
 +(float)getCacheSize
 {
     float cacheSize = 0.0;
-    NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
+    NSString *documentsDirectory = [ISSFileOp ReturnLibFilePath];
     NSString *tmpFolder = [documentsDirectory stringByAppendingPathComponent:AsyncImgFILE_FOLDER];
     if([[NSFileManager defaultManager] fileExistsAtPath:tmpFolder])
     {

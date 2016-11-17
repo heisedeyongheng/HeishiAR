@@ -15,6 +15,7 @@
 #define KServerURL                  @"http://119.29.53.118:8080/"
 #define KLoginApi                   @"user/login"
 #define KRegistAPI                  @"user/register"
+#define KModifyInfoApi              @"user/update"
 
 
 /*微信 开放平台*/
@@ -53,6 +54,7 @@ alpha:(a)]
 #endif
 
 /*customview*/
+#define GREEN_BTN_COLOR     RGBCOLOR(10, 200, 10)
 #define GRAY_FONT_COLOR     [UIColor colorWithRed:190/255.0f green:190/255.0f blue:190/255.0f alpha:1.0]
 #define MAIN_CACHE_PATH                 @"myCaches"
 #define AsyncImgFILE_FOLDER             @"AsyncImg"

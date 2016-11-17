@@ -25,42 +25,6 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 @implementation ISSFileOp
 
 
-
-
-#pragma mark - get file create date
-+(NSString *)getFileCreateDate:(NSString *)fileName
-{
-    NSString *documentsDirectory = [ISSFileOp ReturnLastUserLibFilePath];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:MAIN_CACHE_PATH];
-    
-    
-    filePath = [filePath stringByAppendingPathComponent:fileName];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
-    {
-        
-        NSDictionary* attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
-        
-        if (attrs != nil) {
-            NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-            NSDate *date = (NSDate*)[attrs objectForKey: NSFileCreationDate];
-            NSString * dateStr = [formatter stringFromDate:date];
-            
-            //DEBUG_NSLOG(@"getFileCreateDate  filePath  ====>>>>>   %@  《《《《《《《《《《 %@",filePath,dateStr);
-            
-            return [ISSFileOp dateTimeToCNTime:dateStr];
-        }
-        else {
-            return nil;
-        }
-    }
-    else
-        return nil;
-    
-}
-
-
 //获取N天后的数据
 +(NSDate *)getAfterDateFromCurrentDateWithDay:(NSInteger)day
 {

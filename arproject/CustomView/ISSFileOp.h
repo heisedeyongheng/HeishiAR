@@ -38,7 +38,6 @@
 +(NSString *)ReturnLastUserSendBoxPath;
 +(NSString *)ReturnLastUserUploadBoxPath;
 
-+(NSString *)ReturnLastUserLibFilePath;
 +(void)writeBaseInfoLastUserType:(NSInteger)userType writeValue:(NSString*)value;
 /******************************************************************************
  格式化时间格式

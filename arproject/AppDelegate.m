@@ -163,6 +163,19 @@ AppDelegate * appDelegate;//全局访问对象
         DEBUG_NSLOG(@"userlist为空");
     }
 }
+-(BOOL)clearCurUser
+{
+    NSString * infoPath = [ISSFileOp ReturnDocumentPath];
+    infoPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
+    NSMutableDictionary * userList = nil;
+    if([[NSFileManager defaultManager] fileExistsAtPath:infoPath]){
+        userList = [NSMutableDictionary dictionaryWithContentsOfFile:infoPath];
+        [userList setValue:@"" forKey:@"curuser"];
+        [userList writeToFile:infoPath atomically:YES];
+        return YES;
+    }
+    return NO;
+}
 
 
 #pragma mark - message View

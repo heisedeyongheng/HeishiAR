@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "RegistViewController.h"
 #import "ISSFileOp.h"
 #import "AppDelegate.h"
 
@@ -39,7 +40,7 @@ extern AppDelegate * appDelegate;
 }
 -(void)initControls
 {
-    [self setNavBg:self title:@"登录" back:@"" right:nil];
+    [self setNavBg:self title:@"登录" back:@"" right:@"注册"];
     CGFloat horOffset = 40;
     CGFloat contentW = appDelegate.screenWidth - horOffset*2;
     userNameField = [[UITextField alloc] init];
@@ -57,7 +58,7 @@ extern AppDelegate * appDelegate;
     [self.view addSubview:userPwdField];
     UIButton * loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginBtn setFrame:CGRectMake(horOffset, OBJBOTTOM(userPwdField) + 20, contentW, 40)];
-    [loginBtn setBackgroundImage:[ISSFileOp getImgByColor:RGBCOLOR(0, 0, 0) size:CGSizeMake(1, 1)] forState:UIControlStateNormal];
+    [loginBtn setBackgroundImage:[ISSFileOp getImgByColor:GREEN_BTN_COLOR size:CGSizeMake(1, 1)] forState:UIControlStateNormal];
     [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
     [loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [loginBtn addTarget:self action:@selector(loginAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -88,6 +89,13 @@ extern AppDelegate * appDelegate;
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
     [appDelegate hideTopNav:YES];
+}
+-(void)rightAction:(UIButton *)btn
+{
+    RegistViewController * regist = [[RegistViewController alloc] initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:regist animated:YES];
+    [regist release];
+    [appDelegate showTopNav:YES];
 }
 -(void)loginAction:(UIButton*)btn
 {

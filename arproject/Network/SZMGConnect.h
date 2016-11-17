@@ -11,6 +11,8 @@
 #import "MBProgressHUD.h"
 #import "ProcessImageView.h"
 #import "DataParser.h"
+#import "ASIFormDataRequest.h"
+#import "ASIHTTPRequest.h"
 
 
 #define NETTIME         20//网络超时
@@ -22,15 +24,18 @@
 -(void)onNetError:(ErrorObject*)error;
 @end
 
-@interface SZMGConnect : NSObject<NSURLConnectionDelegate>
+@interface SZMGConnect : NSObject
 {
     //URL
 	NSString*			connectionUrl;
     //连接对象
-    NSURLConnection*    netConnection;
+//    NSURLConnection*    netConnection;
+    ASIHTTPRequest      *mainRequest;
     //数据对象
     NSMutableData*      netData;
     NSString *          postStr;
+    NSMutableDictionary * formValues;
+    NSMutableDictionary * formFiles;
     Boolean isPost;
     id<SZMGConnectDelegate> datadelegate;
     
@@ -39,14 +44,16 @@
     long long totalLen;
     UIButton * cancelBtn;
     BOOL isLock;
+    BOOL                isCancel;
 }
-@property(retain) id<SZMGConnectDelegate> datadelegate;
+@property(nonatomic,retain) id<SZMGConnectDelegate> datadelegate;
 -(id)init;
 -(id)initWithProcessBar:(UIView*)parentView;
 -(id)initWithIndicator:(UIView *)parentView;
 -(id)initWithHUD:(UIView*)parentView hudTitle:(NSString*)title;
 -(void)httpLogin:(NSString*)username pwd:(NSString*)pwd weixinid:(NSString*)weixinid;
 -(void)httpRegist:(NSString*)username pwd:(NSString*)pwd;
+-(void)httpModifyUserInfo:(NSString*)userId nick:(NSString*)nick head:(NSString*)head pwd:(NSString*)pwd oldpwd:(NSString*)oldpwd;
 @end
 
 

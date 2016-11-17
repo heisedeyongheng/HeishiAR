@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "RegistViewController.h"
 #import "LoginViewController.h"
+#import "UserInfoViewController.h"
 #import "AppDelegate.h"
 
 extern AppDelegate * appDelegate;
@@ -90,18 +91,28 @@ extern AppDelegate * appDelegate;
     [loginBtn.layer setCornerRadius:loginBtn.frame.size.width/2];
     [loginContain addSubview:loginBtn];
     
-    regBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [regBtn setFrame:CGRectMake(0, OBJBOTTOM(loginBtn) + 20, 80, 30)];
-    [regBtn setCenter:CGPointMake(loginContain.frame.size.width/2, regBtn.center.y)];
-    [regBtn addTarget:self action:@selector(regAction:) forControlEvents:UIControlEventTouchUpInside];
-    [regBtn setBackgroundColor:[UIColor whiteColor]];
-    [regBtn setTitle:@"注册" forState:UIControlStateNormal];
-    [regBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [regBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [loginContain addSubview:regBtn];
+//    regBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [regBtn setFrame:CGRectMake(0, OBJBOTTOM(loginBtn) + 20, 80, 30)];
+//    [regBtn setCenter:CGPointMake(loginContain.frame.size.width/2, regBtn.center.y)];
+//    [regBtn addTarget:self action:@selector(regAction:) forControlEvents:UIControlEventTouchUpInside];
+//    [regBtn setBackgroundColor:[UIColor whiteColor]];
+//    [regBtn setTitle:@"注册" forState:UIControlStateNormal];
+//    [regBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [regBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
+//    [loginContain addSubview:regBtn];
+    UILabel * tipLab = [[UILabel alloc] init];
+    [tipLab setFrame:CGRectMake(0, OBJBOTTOM(loginBtn), 80, 30)];
+    [tipLab setCenter:CGPointMake(loginContain.frame.size.width/2, tipLab.center.y)];
+    [tipLab setBackgroundColor:[UIColor clearColor]];
+    [tipLab setTextColor:[UIColor whiteColor]];
+    [tipLab setFont:[UIFont systemFontOfSize:12]];
+    [tipLab setTextAlignment:NSTextAlignmentCenter];
+    [tipLab setText:@"请登录"];
+    [loginContain addSubview:tipLab];
+    [tipLab release];
     
     UIView * bgView = [[UIView alloc] init];
-    [bgView setFrame:CGRectMake(0, OBJBOTTOM(regBtn) + 20, CGRectGetWidth(loginContain.frame), CGRectGetHeight(loginContain.frame) - (OBJBOTTOM(regBtn) + 20))];
+    [bgView setFrame:CGRectMake(0, OBJBOTTOM(tipLab) + 20, CGRectGetWidth(loginContain.frame), CGRectGetHeight(loginContain.frame) - (OBJBOTTOM(regBtn) + 20))];
     [bgView setBackgroundColor:[UIColor whiteColor]];
     [loginContain addSubview:bgView];
     [bgView release];
@@ -146,9 +157,15 @@ extern AppDelegate * appDelegate;
     [headerView setFrame:CGRectMake(0, 0, 80, 80)];
     [headerView setCenter:CGPointMake(normalContain.frame.size.width/2, 130)];
     [headerView setBackgroundColor:[UIColor whiteColor]];
+    [headerView.layer setCornerRadius:loginBtn.frame.size.width/2];
+    [headerView.layer setMasksToBounds:YES];
+    [headerView setContentMode:UIViewContentModeScaleAspectFill];
+    [headerView setDelegate:self];
+    [headerView setIsUseSuperContentMode:YES];
+    [headerView setUserInteractionEnabled:YES];
     [normalContain addSubview:headerView];
     userNick = [[UILabel alloc] init];
-    [userNick setFrame:CGRectMake(0, OBJBOTTOM(headerView) + 20, 80, 30)];
+    [userNick setFrame:CGRectMake(0, OBJBOTTOM(headerView), 80, 30)];
     [userNick setCenter:CGPointMake(normalContain.frame.size.width/2, userNick.center.y)];
     [userNick setBackgroundColor:[UIColor clearColor]];
     [userNick setTextColor:[UIColor whiteColor]];
@@ -157,7 +174,7 @@ extern AppDelegate * appDelegate;
     [normalContain addSubview:userNick];
     
     UIView * bgView = [[UIView alloc] init];
-    [bgView setFrame:CGRectMake(0, OBJBOTTOM(regBtn) + 20, CGRectGetWidth(loginContain.frame), CGRectGetHeight(loginContain.frame) - (OBJBOTTOM(regBtn) + 20))];
+    [bgView setFrame:CGRectMake(0, OBJBOTTOM(userNick) + 20, CGRectGetWidth(normalContain.frame), CGRectGetHeight(normalContain.frame) - (OBJBOTTOM(userNick) + 20))];
     [bgView setBackgroundColor:[UIColor whiteColor]];
     [normalContain addSubview:bgView];
     [bgView release];
@@ -241,5 +258,15 @@ extern AppDelegate * appDelegate;
 -(void)maskViewAction:(UIButton*)btn
 {
     [self hideSlipView];
+}
+#pragma mark - ISSAsyncImageViewDelegate
+-(void)buttonClicked:(ISSAsyncImageView *)sender
+{
+    DEBUG_NSLOG(@"%s",__FUNCTION__);
+    UINavigationController * topNav = [appDelegate getTopNav];
+    UserInfoViewController * userInfo = [[UserInfoViewController alloc] initWithNibName:nil bundle:nil];
+    [topNav pushViewController:userInfo animated:YES];
+    [userInfo release];
+    [appDelegate showTopNav:YES];
 }
 @end

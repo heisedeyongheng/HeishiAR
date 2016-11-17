@@ -81,8 +81,7 @@ extern AppDelegate * appDelegate;
 }
 -(void)backAction:(UIButton *)btn
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    [appDelegate hideTopNav:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)regAction:(UIButton*)btn
 {
@@ -107,7 +106,7 @@ extern AppDelegate * appDelegate;
 {
     DEBUG_NSLOG(@"%s",__FUNCTION__);
     UserInfoObj * dataObj = [DataParser parseUserInfo:data];
-    if(dataObj != nil && dataObj.ErrorMsg == nil){
+    if(dataObj != nil && dataObj.ErrorCode == 200){
         [appDelegate addUser:dataObj.userId userObj:dataObj];
         [appDelegate setCurUser:dataObj];
         [appDelegate showMsg:@"注册成功" hiddenTime:2];
