@@ -7,6 +7,7 @@
 //
 
 #import "UserInfoViewController.h"
+#import "PwdViewController.h"
 #import "AppDelegate.h"
 
 extern AppDelegate * appDelegate;
@@ -80,6 +81,7 @@ extern AppDelegate * appDelegate;
     UIButton * threeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [threeBtn setFrame:CGRectMake(0, OBJBOTTOM(twoBtn) + 20, appDelegate.screenWidth, 40)];
     [threeBtn setBackgroundColor:[UIColor whiteColor]];
+    [threeBtn addTarget:self action:@selector(threeAction:) forControlEvents:UIControlEventTouchUpInside];
     [mainScroll addSubview:threeBtn];
     UILabel * pwdLab = [[UILabel alloc] init];
     [pwdLab setFrame:CGRectMake(horOffset, 0, 120, threeBtn.frame.size.height)];
@@ -118,6 +120,9 @@ extern AppDelegate * appDelegate;
 -(void)threeAction:(UIButton*)btn
 {
     [self closeKeyboard];
+    PwdViewController * pwd = [[PwdViewController alloc] initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:pwd animated:YES];
+    [pwd release];
 }
 -(void)rightAction:(UIButton *)btn
 {

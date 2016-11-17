@@ -64,6 +64,7 @@
 		C9BE3C6B1DDDECE700AC8CA3 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE3C5E1DDDECE700AC8CA3 /* ASIInputStream.m */; };
 		C9BE3C6C1DDDECE700AC8CA3 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE3C601DDDECE700AC8CA3 /* ASINetworkQueue.m */; };
 		C9BE3C6D1DDDECE700AC8CA3 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE3C641DDDECE700AC8CA3 /* Reachability.m */; };
+		C9BE3C701DDE008000AC8CA3 /* PwdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BE3C6F1DDE008000AC8CA3 /* PwdViewController.m */; };
 		C9FBF20C1DD7346F00D378F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBF20B1DD7346F00D378F5 /* main.m */; };
 		C9FBF20F1DD7346F00D378F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBF20E1DD7346F00D378F5 /* AppDelegate.m */; };
 		C9FBF2171DD7346F00D378F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9FBF2161DD7346F00D378F5 /* Assets.xcassets */; };
@@ -176,6 +177,8 @@
 		C9BE3C611DDDECE700AC8CA3 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = "<group>"; };
 		C9BE3C631DDDECE700AC8CA3 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		C9BE3C641DDDECE700AC8CA3 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		C9BE3C6E1DDE008000AC8CA3 /* PwdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PwdViewController.h; sourceTree = "<group>"; };
+		C9BE3C6F1DDE008000AC8CA3 /* PwdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PwdViewController.m; sourceTree = "<group>"; };
 		C9FBF2071DD7346F00D378F5 /* arproject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = arproject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FBF20B1DD7346F00D378F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9FBF20D1DD7346F00D378F5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -264,6 +267,8 @@
 				C9AF2D5C1DD9E8E200DD6B50 /* LoginViewController.m */,
 				C9BE3C301DDDDC1D00AC8CA3 /* UserInfoViewController.h */,
 				C9BE3C311DDDDC1D00AC8CA3 /* UserInfoViewController.m */,
+				C9BE3C6E1DDE008000AC8CA3 /* PwdViewController.h */,
+				C9BE3C6F1DDE008000AC8CA3 /* PwdViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -545,6 +550,7 @@
 				C9BE3C6D1DDDECE700AC8CA3 /* Reachability.m in Sources */,
 				C91710241DD7548800EB232D /* SCGIFImageView.m in Sources */,
 				C917101D1DD7548800EB232D /* CacheManager.m in Sources */,
+				C9BE3C701DDE008000AC8CA3 /* PwdViewController.m in Sources */,
 				C91710451DD75A1200EB232D /* SBJsonStreamWriter.m in Sources */,
 				1849A4DB1DDC32C80066BAB3 /* WXPay.m in Sources */,
 				C91710201DD7548800EB232D /* HighlightImageView.m in Sources */,
