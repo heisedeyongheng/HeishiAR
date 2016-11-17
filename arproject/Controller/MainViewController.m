@@ -24,14 +24,22 @@ extern AppDelegate * appDelegate;
     FREEOBJECT(mainBg);
     FREEOBJECT(bgMaskView);
     FREEOBJECT(loginContain);
+    FREEOBJECT(normalContain);
+    FREEOBJECT(headerView);
+    FREEOBJECT(userNick);
     [super dealloc];
 }
 -(void)viewDidLoad {
     [super viewDidLoad];
     [self initControls];
+    [self checkUserStatus];
     // Do any additional setup after loading the view.
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self checkUserStatus];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -129,7 +137,51 @@ extern AppDelegate * appDelegate;
 }
 -(void)initNormalView
 {
-
+    normalContain = [[UIView alloc] initWithFrame:mainBg.bounds];
+    [normalContain setBackgroundColor:[UIColor clearColor]];
+    [normalContain setUserInteractionEnabled:YES];
+    [mainBg addSubview:normalContain];
+    
+    headerView = [[ISSAsyncImageView alloc] init];
+    [headerView setFrame:CGRectMake(0, 0, 80, 80)];
+    [headerView setCenter:CGPointMake(normalContain.frame.size.width/2, 130)];
+    [normalContain addSubview:headerView];
+    userNick = [[UILabel alloc] init];
+    [userNick setFrame:CGRectMake(0, OBJBOTTOM(headerView) + 20, 80, 30)];
+    [userNick setCenter:CGPointMake(normalContain.frame.size.width/2, userNick.center.y)];
+    [userNick setBackgroundColor:[UIColor clearColor]];
+    [userNick setTextColor:[UIColor whiteColor]];
+    [userNick setFont:[UIFont systemFontOfSize:12]];
+    [userNick setTextAlignment:NSTextAlignmentCenter];
+    [normalContain addSubview:userNick];
+    
+    UIView * bgView = [[UIView alloc] init];
+    [bgView setFrame:CGRectMake(0, OBJBOTTOM(regBtn) + 20, CGRectGetWidth(loginContain.frame), CGRectGetHeight(loginContain.frame) - (OBJBOTTOM(regBtn) + 20))];
+    [bgView setBackgroundColor:[UIColor whiteColor]];
+    [normalContain addSubview:bgView];
+    [bgView release];
+    UILabel * titleLab = [[UILabel alloc] init];
+    [titleLab setFrame:CGRectMake(20, 0, bgView.frame.size.width, 40)];
+    [titleLab setTextColor:RGBACOLOR(180, 180, 180, 1)];
+    [titleLab setFont:[UIFont systemFontOfSize:12]];
+    [titleLab setText:@"功能与设置"];
+    [bgView addSubview:titleLab];
+    [titleLab release];
+    TBMargin margin = TBMargionMake(8, 8, 15, 8);
+}
+-(void)checkUserStatus
+{
+    UserInfoObj * userObj = [appDelegate getCurUser];
+    if(userObj != nil){
+        [normalContain setHidden:NO];
+        [loginContain setHidden:YES];
+        [headerView loadImageFromCache:userObj.userHead];
+        [userNick setText:userObj.userNick];
+    }
+    else{
+        [loginContain setHidden:NO];
+        [normalContain setHidden:YES];
+    }
 }
 #pragma mark --- 登录
 -(void)loginAction:(UIButton*)btn

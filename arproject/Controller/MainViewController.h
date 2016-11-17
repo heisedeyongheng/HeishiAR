@@ -15,10 +15,13 @@
     //背景
     UIButton * bgMaskView;
     UIImageView * mainBg;
+    
     UIView * loginContain;
     UIButton * loginBtn;
     UIButton * regBtn;
-    ISSAsyncImageView * headerView;
     
+    UIView * normalContain;
+    ISSAsyncImageView * headerView;
+    UILabel * userNick;
 }
 @end

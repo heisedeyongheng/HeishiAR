@@ -59,10 +59,17 @@ extern AppDelegate * appDelegate;
     [userPwdConfirmField setBorderStyle:UITextBorderStyleRoundedRect];
     [userPwdConfirmField setPlaceholder:@"确认密码"];
     [userPwdConfirmField setSecureTextEntry:YES];
-    [userPwdField setFont:[UIFont systemFontOfSize:14]];
+    [userPwdConfirmField setFont:[UIFont systemFontOfSize:14]];
     [mainScroll addSubview:userPwdConfirmField];
+    userNick = [[UITextField alloc] init];
+    [userNick setFrame:CGRectMake(horOffset, OBJBOTTOM(userPwdConfirmField) + 20, contentW, 40)];
+    [userNick setBorderStyle:UITextBorderStyleRoundedRect];
+    [userNick setPlaceholder:@"昵称"];
+    [userNick setFont:[UIFont systemFontOfSize:14]];
+    [mainScroll addSubview:userNick];
+    
     UIButton * regBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [regBtn setFrame:CGRectMake(horOffset, OBJBOTTOM(userPwdConfirmField) + 20, contentW, 40)];
+    [regBtn setFrame:CGRectMake(horOffset, OBJBOTTOM(userNick) + 20, contentW, 40)];
     [regBtn setBackgroundImage:[ISSFileOp getImgByColor:RGBCOLOR(0, 0, 0) size:CGSizeMake(1, 1)] forState:UIControlStateNormal];
     [regBtn setTitle:@"注册" forState:UIControlStateNormal];
     [regBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -71,6 +78,11 @@ extern AppDelegate * appDelegate;
     
     [mainScroll setIsCloseKeyboardWhenTouch:YES];
     [mainScroll relayoutContentSize];
+}
+-(void)backAction:(UIButton *)btn
+{
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    [appDelegate hideTopNav:YES];
 }
 -(void)regAction:(UIButton*)btn
 {
@@ -82,7 +94,7 @@ extern AppDelegate * appDelegate;
     if(STRNULL(userPwd).length == 0)errMsg = @"请输入密码";
     if([STRNULL(userPwd) isEqualToString:userPwdConfirm] == NO)errMsg = @"两次密码不一致";
     if(errMsg != nil){
-        [appDelegate showMsg:errMsg];
+        [appDelegate showAlertOKWithMessage:errMsg];
         return;
     }
     SZMGConnect * con = [[SZMGConnect alloc] init];
@@ -94,6 +106,18 @@ extern AppDelegate * appDelegate;
 -(void)onFinish:(NSData *)data url:(NSString *)url
 {
     DEBUG_NSLOG(@"%s",__FUNCTION__);
+    UserInfoObj * dataObj = [DataParser parseUserInfo:data];
+    if(dataObj != nil && dataObj.ErrorMsg == nil){
+        [appDelegate addUser:dataObj.userId userObj:dataObj];
+        [appDelegate setCurUser:dataObj];
+        [appDelegate showMsg:@"注册成功" hiddenTime:2];
+        [self performSelector:@selector(backAction:) withObject:nil afterDelay:0.2];
+    }
+    else{
+        if(STRNULL(dataObj.ErrorMsg).length > 0){
+            [appDelegate showMsg:dataObj.ErrorMsg hiddenTime:2];
+        }
+    }
 }
 -(void)onNetError:(ErrorObject *)error
 {

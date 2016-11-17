@@ -152,6 +152,18 @@ extern AppDelegate * appDelegate;
 -(void)onFinish:(NSData *)data url:(NSString *)url
 {
     DEBUG_NSLOG(@"%s",__FUNCTION__);
+    UserInfoObj * dataObj = [DataParser parseUserInfo:data];
+    if(dataObj != nil && dataObj.ErrorCode == 200){
+        [appDelegate addUser:dataObj.userId userObj:dataObj];
+        [appDelegate setCurUser:dataObj];
+        [appDelegate showMsg:@"登录成功" hiddenTime:2];
+        [self performSelector:@selector(backAction:) withObject:nil afterDelay:0.2];
+    }
+    else{
+        if(STRNULL(dataObj.ErrorMsg).length > 0){
+            [appDelegate showMsg:dataObj.ErrorMsg hiddenTime:2];
+        }
+    }
 }
 -(void)onNetError:(ErrorObject *)error
 {

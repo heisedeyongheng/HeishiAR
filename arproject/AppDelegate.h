@@ -30,6 +30,7 @@
 
 -(void)addUser:(NSString*)userId userObj:(UserInfoObj*)dataObj;
 -(void)removeUser:(NSString*)userId;
--(void)getUserList;
+-(UserInfoObj*)getCurUser;
+-(void)setCurUser:(UserInfoObj*)dataObj;
 @end
 

@@ -78,6 +78,9 @@ AppDelegate * appDelegate;//全局访问对象
 }
 -(void)hideTopNav:(BOOL)isAnim
 {
+    UIViewController * rootViewController = (UIViewController*)[mainNav.viewControllers objectAtIndex:0];
+    [rootViewController viewWillAppear:YES];
+    
     [UIView animateWithDuration:(isAnim ? 0.3 : 0) animations:^(){
         [topNav.view setCenter:CGPointMake(screenWidth*1.5, topNav.view.center.y)];
     } completion:^(BOOL isFinished){}];
@@ -111,15 +114,49 @@ AppDelegate * appDelegate;//全局访问对象
 }
 -(void)removeUser:(NSString*)userId
 {
-    
+    if(STRNULL(userId).length == 0)return;
+    NSString * infoPath = [ISSFileOp ReturnDocumentPath];
+    NSString * listPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
+    NSMutableDictionary * userList = nil;
+    if([[NSFileManager defaultManager] fileExistsAtPath:listPath]){
+        userList = [NSMutableDictionary dictionaryWithContentsOfFile:listPath];
+        [userList removeObjectForKey:userId];
+        [userList writeToFile:listPath atomically:YES];
+    }
+    NSString * detailPath = [NSString stringWithFormat:@"%@/%@.plist",infoPath,userId];
+    [[NSFileManager defaultManager] removeItemAtPath:detailPath error:nil];
 }
--(void)getUserList
+-(UserInfoObj*)getCurUser
+{
+    UserInfoObj * result = nil;
+    NSString * infoPath = [ISSFileOp ReturnDocumentPath];
+    infoPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
+    NSMutableDictionary * userList = nil;
+    if([[NSFileManager defaultManager] fileExistsAtPath:infoPath]){
+        userList = [NSMutableDictionary dictionaryWithContentsOfFile:infoPath];
+        NSString * curUserId = [userList valueForKey:@"curuser"];
+        NSString * detailPath = [NSString stringWithFormat:@"%@/%@.plist",infoPath,curUserId];
+        NSDictionary * detailDict = [NSDictionary dictionaryWithContentsOfFile:detailPath];
+        if(detailDict != nil){
+            NSString * detailJson = (NSString*)[detailDict valueForKey:@"jsonStr"];
+            result = [[[UserInfoObj alloc] init] autorelease];
+            [result setDataByJson:detailJson];
+        }
+    }
+    else{
+        DEBUG_NSLOG(@"userlist为空");
+    }
+    return result;
+}
+-(void)setCurUser:(UserInfoObj *)dataObj
 {
     NSString * infoPath = [ISSFileOp ReturnDocumentPath];
     infoPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
     NSMutableDictionary * userList = nil;
     if([[NSFileManager defaultManager] fileExistsAtPath:infoPath]){
         userList = [NSMutableDictionary dictionaryWithContentsOfFile:infoPath];
+        [userList setValue:dataObj.userId forKey:@"curuser"];
+        [userList writeToFile:infoPath atomically:YES];
     }
     else{
         DEBUG_NSLOG(@"userlist为空");

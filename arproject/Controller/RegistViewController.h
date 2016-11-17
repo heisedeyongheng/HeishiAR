@@ -13,5 +13,6 @@
     UITextField * userNameField;
     UITextField * userPwdField;
     UITextField * userPwdConfirmField;
+    UITextField * userNick;
 }
 @end

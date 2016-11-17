@@ -590,7 +590,7 @@
 					"-Objc",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hish.arproject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hishtech.hish;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "fa33ec94-0786-4cce-b828-ae45b4da284a";
 			};
@@ -616,7 +616,7 @@
 					"-Objc",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hish.arproject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hishtech.hish;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "fa33ec94-0786-4cce-b828-ae45b4da284a";
 			};
