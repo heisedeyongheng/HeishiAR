@@ -100,6 +100,7 @@ extern AppDelegate * appDelegate;
         [appDelegate showAlertOKWithMessage:errMsg];
         return;
     }
+    [self closeKeyboard];
     SZMGConnect * con = [[SZMGConnect alloc] init];
     [con setDatadelegate:self];
     [con httpLogin:userName pwd:userPwd weixinid:@""];
@@ -147,6 +148,11 @@ extern AppDelegate * appDelegate;
 //        //        [self loginWithKey:thirdUserKey thirdUserNick:thirdUserNick type:2 faceUrl:@""];//第三方登录成功，向本系统注册
 //        [self loginWithKey:thirdUserKey thirdUserNick:thirdUserNick type:2 faceUrl:@"" wxOpenId:wxOpenId wxUnionId:thirdUserKey];
     }
+}
+-(void)closeKeyboard
+{
+    [userNameField resignFirstResponder];
+    [userPwdField resignFirstResponder];
 }
 #pragma mark -- network
 -(void)onFinish:(NSData *)data url:(NSString *)url

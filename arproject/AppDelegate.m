@@ -109,7 +109,8 @@ AppDelegate * appDelegate;//全局访问对象
     //详情
     NSString * detailPath = [NSString stringWithFormat:@"%@/%@.plist",infoPath,dataObj.userId];
     NSMutableDictionary * detailDict = [NSMutableDictionary dictionaryWithCapacity:1];
-    [detailPath setValue:[dataObj toJson] forKey:@"jsonStr"];
+    NSString * jsonStr = [dataObj toJson];
+    [detailDict setValue:jsonStr forKey:@"jsonStr"];
     [detailDict writeToFile:detailPath atomically:YES];
 }
 -(void)removeUser:(NSString*)userId
@@ -130,10 +131,10 @@ AppDelegate * appDelegate;//全局访问对象
 {
     UserInfoObj * result = nil;
     NSString * infoPath = [ISSFileOp ReturnDocumentPath];
-    infoPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
+    NSString * listPath = [NSString stringWithFormat:@"%@/userlist.plist",infoPath];
     NSMutableDictionary * userList = nil;
-    if([[NSFileManager defaultManager] fileExistsAtPath:infoPath]){
-        userList = [NSMutableDictionary dictionaryWithContentsOfFile:infoPath];
+    if([[NSFileManager defaultManager] fileExistsAtPath:listPath]){
+        userList = [NSMutableDictionary dictionaryWithContentsOfFile:listPath];
         NSString * curUserId = [userList valueForKey:@"curuser"];
         NSString * detailPath = [NSString stringWithFormat:@"%@/%@.plist",infoPath,curUserId];
         NSDictionary * detailDict = [NSDictionary dictionaryWithContentsOfFile:detailPath];

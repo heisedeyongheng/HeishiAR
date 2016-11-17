@@ -71,7 +71,7 @@
 @property(nonatomic,copy)NSString * userNick;
 @property(nonatomic,copy)NSString * userWeixinId;
 @property(nonatomic,copy)NSString * userHead;
-@property int isAdmin;
+@property(nonatomic,copy)NSString * isAdmin;
 @property int userAge;
 @property int userSex;
 @end

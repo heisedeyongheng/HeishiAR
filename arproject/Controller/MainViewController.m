@@ -145,6 +145,7 @@ extern AppDelegate * appDelegate;
     headerView = [[ISSAsyncImageView alloc] init];
     [headerView setFrame:CGRectMake(0, 0, 80, 80)];
     [headerView setCenter:CGPointMake(normalContain.frame.size.width/2, 130)];
+    [headerView setBackgroundColor:[UIColor whiteColor]];
     [normalContain addSubview:headerView];
     userNick = [[UILabel alloc] init];
     [userNick setFrame:CGRectMake(0, OBJBOTTOM(headerView) + 20, 80, 30)];

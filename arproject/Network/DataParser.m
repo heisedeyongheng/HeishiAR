@@ -43,6 +43,8 @@ extern AppDelegate * appDelegate;
                 [dict setValue:jsonArr forKey:propertyName];
                 [jsonArr release];
             }
+            else if([propertyValue isKindOfClass:[NSNumber class]])
+                continue;
             else{
                 [dict setValue:propertyValue forKey:propertyName];
             }
@@ -158,6 +160,7 @@ extern AppDelegate * appDelegate;
     FREEOBJECT(userHead);
     FREEOBJECT(userNick);
     FREEOBJECT(userWeixinId);
+    FREEOBJECT(isAdmin);
     [super dealloc];
 }
 @end
@@ -182,7 +185,7 @@ extern AppDelegate * appDelegate;
 +(NSInteger)idToInt:(id)obj key:(NSString *)_key
 {
     id value = [obj valueForKey:_key];
-    if(value != nil)
+    if(value != nil && [value isKindOfClass:[NSNull class]] == NO)
     {
         if([obj isKindOfClass:[NSNumber class]])
             return [value intValue];
@@ -292,7 +295,7 @@ extern AppDelegate * appDelegate;
 
 +(UserInfoObj*)parseUserInfo:(NSData *)_data
 {
-    UserInfoObj * resultObj = nil;;
+    UserInfoObj * resultObj = nil;
     
     NSString *result = [[[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding] autorelease];
     id obj = [result JSONValue];
@@ -303,7 +306,13 @@ extern AppDelegate * appDelegate;
     resultObj = [[UserInfoObj alloc] init];
     resultObj.ErrorCode = [DataParser idToInt:obj key:@"code"];
     resultObj.ErrorMsg = [DataParser idToStr:obj key:@"msg"];
-    
+    id dataObj = [obj objectForKey:@"data"];
+    resultObj.userId = [DataParser idToStr:dataObj key:@"userid"];
+    resultObj.userName = [DataParser idToStr:dataObj key:@"username"];
+    resultObj.userNick = [DataParser idToStr:dataObj key:@"nickname"];
+    resultObj.userPwd = [DataParser idToStr:dataObj key:@"password"];
+    resultObj.userHead = [DataParser idToStr:dataObj key:@"head"];
+    resultObj.isAdmin = [DataParser idToStr:dataObj key:@"isadmin"];
     return resultObj;
 }
 @end
