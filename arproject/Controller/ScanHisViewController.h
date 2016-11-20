@@ -7,11 +7,17 @@
 //
 
 #import "BaseViewController.h"
-#import "CWRefreshTableView.h"
+#import "MJRefresh.h"
 
-@interface ScanHisViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,SZMGConnectDelegate,CWRefreshTableViewDelegate>
+@interface HisCell : UITableViewCell
+
+@end
+
+
+@interface ScanHisViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,SZMGConnectDelegate>
 {
-    CWRefreshTableView * refreshHeaderView;
     UITableView * mainTable;
+    NSInteger pageno;
+    NSInteger allpage;
 }
 @end

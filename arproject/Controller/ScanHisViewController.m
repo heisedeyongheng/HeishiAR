@@ -12,6 +12,11 @@
 
 extern AppDelegate * appDelegate;
 
+@implementation HisCell
+
+@end
+
+
 @implementation ScanHisViewController
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,9 +55,14 @@ extern AppDelegate * appDelegate;
     [mainTable setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:mainTable];
     
-    refreshHeaderView = [[CWRefreshTableView alloc] initWithTableView:mainTable pullDirection:CWRefreshTableViewDirectionDown];
-    [refreshHeaderView setIsNeedFixIOS7:YES];
-    refreshHeaderView.delegate = self;
+    MJRefreshNormalHeader *refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(onPullRefresh)];
+    refreshHeader.lastUpdatedTimeLabel.hidden = YES;
+    mainTable.mj_header = refreshHeader;
+    MJRefreshAutoFooter *refreshFooter = [MJRefreshAutoFooter footerWithRefreshingTarget: self refreshingAction:@selector(onPullLoadMore)];
+    refreshFooter.triggerAutomaticallyRefreshPercent = -10;
+    // 忽略掉底部inset
+    mainTable.mj_footer.ignoredScrollViewContentInsetBottom = 44;
+    mainTable.mj_footer = refreshFooter;
     
     [mainTable setContentSize:CGSizeMake(appDelegate.screenWidth, 2000)];
 }
@@ -86,40 +96,37 @@ extern AppDelegate * appDelegate;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-#pragma mark - UITableViewDelegate
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+
+#pragma mark - event response
+-(void)onPullRefresh
+{
+    DEBUG_NSLOG(@"%s",__FUNCTION__);
+//    pageno = 1;
+//    [self loadDataFromNet];
+}
+-(void)onPullLoadMore
+{
+    DEBUG_NSLOG(@"%s",__FUNCTION__);
+//    if (pageno >= allpage) {
+//        [mainTable.mj_footer endRefreshingWithNoMoreData];
+//    }else{
+//        pageno ++;
+//        [self loadDataFromNet];
+//    }
+    
+//    if (pageno < allpage) {
+//        [mainTable.mj_footer resetNoMoreData];
+//    }else{
+//        [mainTable.mj_footer endRefreshingWithNoMoreData];
+//    }
+}
+-(void)endDataMJRefres
 {
     
-}
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [refreshHeaderView scrollViewDidScroll:scrollView];
-    if(mainTable.contentOffset.y + mainTable.frame.size.height > mainTable.contentSize.height - 200){
-        DEBUG_NSLOG(@"加载更多");
+    if (pageno < allpage) {
+        [mainTable.mj_footer resetNoMoreData];
+    }else{
+        [mainTable.mj_footer endRefreshingWithNoMoreData];
     }
-}
-
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [refreshHeaderView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-}
-- (void)doneLoadingTableViewData{
-    [refreshHeaderView DataSourceDidFinishedLoading];
-}
-
-#pragma mark -CWRefreshTableViewDelegate
--(BOOL)CWRefreshTableViewReloadTableViewDataSource:(CWRefreshTableViewPullType)refreshType
-{
-    if(refreshType == CWRefreshTableViewPullTypeLoadMore)
-    {//下拉
-        DEBUG_NSLOG(@"加载更多");
-    }
-    if(refreshType == CWRefreshTableViewPullTypeReload)
-    {//上拉
-        DEBUG_NSLOG(@"重现加载");
-        
-    }
-    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:0.5];
-    return  YES;
 }
 @end
