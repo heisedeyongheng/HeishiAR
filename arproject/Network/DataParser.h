@@ -28,6 +28,8 @@
 }
 @property NSInteger ErrorCode;
 @property (nonatomic,retain) NSString * ErrorMsg;
+@property NSInteger totalPage;
+@property NSInteger curPage;
 @end
 
 
@@ -75,6 +77,18 @@
 @property int userAge;
 @property int userSex;
 @end
+@interface ScanHisObj : ErrorObject
+@property(nonatomic,copy)NSString * logoUrl;
+@property(nonatomic,copy)NSString * name;
+@property(nonatomic,copy)NSString * time;
+@end
+@interface ScanCountObj : ErrorObject
+@property(nonatomic,copy)NSString * logoUrl;
+@property(nonatomic,copy)NSString * name;
+@property(nonatomic,copy)NSString * time;
+@property(nonatomic,copy)NSString * count;
+@end
+
 
 @interface DataParser : NSObject
 +(NSString*)idToStr:(id)obj key:(NSString *)_key;

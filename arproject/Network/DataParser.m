@@ -88,8 +88,7 @@ extern AppDelegate * appDelegate;
 
 
 @implementation ErrorObject
-@synthesize ErrorCode;
-@synthesize ErrorMsg;
+@synthesize ErrorCode,ErrorMsg,totalPage,curPage;
 -(void)dealloc
 {
     DEBUG_NSLOG(@"%s",__FUNCTION__);
@@ -164,6 +163,28 @@ extern AppDelegate * appDelegate;
     [super dealloc];
 }
 @end
+@implementation ScanHisObj
+@synthesize logoUrl,name,time;
+-(void)dealloc
+{
+    FREEOBJECT(logoUrl);
+    FREEOBJECT(name);
+    FREEOBJECT(time);
+    [super dealloc];
+}
+@end
+@implementation ScanCountObj
+@synthesize logoUrl,name,time,count;
+-(void)dealloc
+{
+    FREEOBJECT(logoUrl);
+    FREEOBJECT(name);
+    FREEOBJECT(time);
+    FREEOBJECT(count);
+    [super dealloc];
+}
+@end
+
 
 @implementation DataParser
 +(NSString*)idToStr:(id)obj key:(NSString *)_key

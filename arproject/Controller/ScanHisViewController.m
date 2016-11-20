@@ -13,7 +13,50 @@
 extern AppDelegate * appDelegate;
 
 @implementation HisCell
-
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    return self;
+}
+-(void)dealloc
+{
+    FREEOBJECT(logoImage);
+    FREEOBJECT(nameLab);
+    FREEOBJECT(timeLab);
+    [super dealloc];
+}
+-(void)initControls
+{
+    TBMargin margin = TBMargionMake(10, 10, 10, 10);
+    CGFloat imgS = [HisCell cellH] - margin.t - margin.b;
+    logoImage = [[ISSAsyncImageView alloc] init];
+    [logoImage setFrame:CGRectMake(margin.l, margin.t, imgS, imgS)];
+    [logoImage setIsUseSuperContentMode:YES];
+    [logoImage setContentMode:UIViewContentModeScaleAspectFit];
+    [self.contentView addSubview:logoImage];
+    CGFloat nameLabW = appDelegate.screenWidth - margin.l - margin.r - 5;
+    nameLab = [[UILabel alloc] init];
+    [nameLab setFrame:CGRectMake(OBJRIGHT(logoImage) + 5, logoImage.frame.origin.y, nameLabW, CGRectGetHeight(logoImage.frame)/2)];
+    [nameLab setBackgroundColor:[UIColor clearColor]];
+    [nameLab setFont:[UIFont systemFontOfSize:14]];
+    [self.contentView addSubview:nameLab];
+    timeLab = [[UILabel alloc] init];
+    [timeLab setFrame:CGRectMake(OBJRIGHT(logoImage) + 5, OBJBOTTOM(nameLab), nameLabW, CGRectGetHeight(logoImage.frame)/2)];
+    [timeLab setBackgroundColor:[UIColor clearColor]];
+    [timeLab setFont:[UIFont systemFontOfSize:14]];
+    [self.contentView addSubview:timeLab];
+}
+-(void)setData:(ScanHisObj *)data
+{
+    if(data == nil)return;
+    [logoImage loadImageFromCache:data.logoUrl isCancelLast:YES];
+    [nameLab setText:data.name];
+    [timeLab setText:data.time];
+}
++(CGFloat)cellH
+{
+    return 60;
+}
 @end
 
 
@@ -27,6 +70,7 @@ extern AppDelegate * appDelegate;
 {
     DEBUG_NSLOG(@"%s",__FUNCTION__);
     FREEOBJECT(mainTable);
+    FREEOBJECT(dataList);
     [super dealloc];
 }
 
@@ -64,7 +108,7 @@ extern AppDelegate * appDelegate;
     mainTable.mj_footer.ignoredScrollViewContentInsetBottom = 44;
     mainTable.mj_footer = refreshFooter;
     
-    [mainTable setContentSize:CGSizeMake(appDelegate.screenWidth, 2000)];
+    dataList = [[NSMutableArray alloc] init];
 }
 #pragma mark -- action
 -(void)backAction:(UIButton *)btn
@@ -79,18 +123,24 @@ extern AppDelegate * appDelegate;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 30;
+    return dataList.count;
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell * cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"] autorelease];
-    [cell.textLabel setText:@"hhhh"];
+    NSString * identifier = @"cell";
+    NSInteger row = [indexPath row];
+    HisCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    ScanHisObj * data = [dataList objectAtIndex:row];
+    if(cell == nil){
+        cell = [[[HisCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
+    }
+    [cell setData:data];
     return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60.0f;
+    return [HisCell cellH];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -128,5 +178,14 @@ extern AppDelegate * appDelegate;
     }else{
         [mainTable.mj_footer endRefreshingWithNoMoreData];
     }
+}
+#pragma mark - network
+-(void)onFinish:(NSData *)data url:(NSString *)url
+{
+
+}
+-(void)onNetError:(ErrorObject *)error
+{
+
 }
 @end
