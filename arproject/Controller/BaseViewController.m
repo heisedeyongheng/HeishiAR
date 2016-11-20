@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "Def.h"
+#import "ISSFileOp.h"
 #import "AppDelegate.h"
 
 extern AppDelegate * appDelegate;
@@ -248,4 +249,48 @@ extern AppDelegate * appDelegate;
     
 }
 
+-(BOOL)isIOS7
+{
+    if (SYSVERSION >= 7.0){
+        int result = [ISSFileOp compareVersionNumber:@"7.1.0" compareWith:[[UIDevice currentDevice] systemVersion]];
+        if (result == 0)
+            return YES;
+        else
+            return NO;
+    }
+    return NO;
+}
+-(void)setAutoAdjustScrollInsets:(BOOL)flag
+{
+    if(SYSVERSION >= 7.0)
+        [self setAutomaticallyAdjustsScrollViewInsets:flag];
+}
+-(CGFloat)getFixOffY
+{
+    CGFloat offsetY = 0.0f;
+    if (SYSVERSION >= 7.0){
+        /*
+         return = -1   有错
+         return = 0    @"7.1" > systemVersion
+         return = 1    相同
+         return = 2    @"7.1" < systemVersion
+         */
+        offsetY = 64.0f;
+        int result = [ISSFileOp compareVersionNumber:@"7.1.0" compareWith:[[UIDevice currentDevice] systemVersion]];
+        if (result == 0) {
+            offsetY = 0.0;
+        }
+        
+        self.automaticallyAdjustsScrollViewInsets = YES;
+    }
+    return offsetY;
+}
+-(CGRect)getMainTableFrame
+{
+    CGFloat offsetY = [self getFixOffY];
+    CGRect tableFrame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height - 64.0f);
+    if(SYSVERSION < 7.0)
+        tableFrame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height + offsetY - 44.0f);
+    return tableFrame;
+}
 @end

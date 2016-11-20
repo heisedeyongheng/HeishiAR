@@ -29,13 +29,10 @@
 
 
 @implementation CWRefreshTableView
-
-
 @synthesize pullTableView = _pullTableView;
-@synthesize delegate = _delegate,isNeedFixIOS7;
+@synthesize delegate = _delegate,isNeedFixIOS7,isAuoLoadMore;
 @synthesize lastUpdateText;
 @synthesize direction;
-
 
 - (id) initWithTableView:(UIScrollView *)tView
            pullDirection:(CWRefreshTableViewDirection) cwDirection
@@ -122,6 +119,7 @@
 - (void) initControl
 {
     isNeedFixIOS7 = NO;
+    isAuoLoadMore = NO;
     switch (_direction) {
             
         case CWRefreshTableViewDirectionUp:
@@ -150,7 +148,16 @@
         [_footerView setIsNeedFixIOS7:isNeedFixIOS7];
     }
 }
-
+-(void)setIsAuoLoadMore:(BOOL)isAuoLoadMorePar
+{
+    isAuoLoadMore = isAuoLoadMorePar;
+    if (_headView) {
+        [_headView setIsAutoLoadMore:isAuoLoadMore];
+    }
+    if (_footerView) {
+        [_footerView setIsAutoLoadMore:isAuoLoadMore];
+    }
+}
 
 - (void) initPullDownView
 {

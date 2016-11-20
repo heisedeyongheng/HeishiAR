@@ -51,6 +51,7 @@ typedef enum
     
 }
 @property (nonatomic) BOOL isNeedFixIOS7;
+@property (nonatomic) BOOL isAuoLoadMore;;
 @property (readonly) EGOPullRefreshDirection direction;
 @property (nonatomic, assign) UIScrollView  *pullTableView;
 @property (nonatomic, assign) id<CWRefreshTableViewDelegate> delegate;

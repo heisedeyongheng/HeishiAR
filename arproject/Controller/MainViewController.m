@@ -10,6 +10,7 @@
 #import "RegistViewController.h"
 #import "LoginViewController.h"
 #import "UserInfoViewController.h"
+#import "ScanHisViewController.h"
 #import "AppDelegate.h"
 
 extern AppDelegate * appDelegate;
@@ -128,7 +129,7 @@ extern AppDelegate * appDelegate;
     [scanRecod setFrame:CGRectMake(0, OBJBOTTOM(titleLab), bgView.frame.size.width, 40)];
     [scanRecod setImgMargion:margin];
     [scanRecod setImgAndData:@"scanr" data:@"扫描记录"];
-    [scanRecod addTarget:self action:@selector(recodAction:) forControlEvents:UIControlEventTouchUpInside];
+    [scanRecod addTarget:self action:@selector(scanHisAction:) forControlEvents:UIControlEventTouchUpInside];
     [bgView addSubview:scanRecod];
     [scanRecod release];
     TBButton * faq = [[TBButton alloc] init];
@@ -186,6 +187,13 @@ extern AppDelegate * appDelegate;
     [bgView addSubview:titleLab];
     [titleLab release];
     TBMargin margin = TBMargionMake(8, 8, 15, 8);
+    TBButton * scanRecod = [[TBButton alloc] init];
+    [scanRecod setFrame:CGRectMake(0, OBJBOTTOM(titleLab), bgView.frame.size.width, 40)];
+    [scanRecod setImgMargion:margin];
+    [scanRecod setImgAndData:@"scanr" data:@"扫描记录"];
+    [scanRecod addTarget:self action:@selector(scanHisAction:) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:scanRecod];
+    [scanRecod release];
 }
 -(void)checkUserStatus
 {
@@ -220,9 +228,14 @@ extern AppDelegate * appDelegate;
     [regist release];
     [appDelegate showTopNav:YES];
 }
--(void)recodAction:(UIButton*)btn
+-(void)scanHisAction:(UIButton*)btn
 {
     DEBUG_NSLOG(@"%s",__FUNCTION__);
+    UINavigationController * topNav = [appDelegate getTopNav];
+    ScanHisViewController * his = [[ScanHisViewController alloc] initWithNibName:nil bundle:nil];
+    [topNav pushViewController:his animated:YES];
+    [his release];
+    [appDelegate showTopNav:YES];
 }
 -(void)faqAction:(UIButton*)btn
 {

@@ -27,4 +27,8 @@
 -(void)setNavBg:(UIViewController *)target title:(id)titleObj back:(id)backObj right:(id)rightObj;
 -(void)backAction:(UIButton*)btn;
 -(void)rightAction:(UIButton*)btn;
+-(BOOL)isIOS7;
+-(void)setAutoAdjustScrollInsets:(BOOL)flag;
+-(CGFloat)getFixOffY;
+-(CGRect)getMainTableFrame;
 @end

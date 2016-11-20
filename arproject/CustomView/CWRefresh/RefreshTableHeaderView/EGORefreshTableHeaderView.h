@@ -27,9 +27,9 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "SCGIFImageView.h"
-#define  RefreshViewHight 65.0f
+#define  RefreshViewHight       65.0f
 
-#define ISUSEGIF
+//#define ISUSEGIF
 
 typedef enum{
 	EGOOPullRefreshPulling = 0,
@@ -52,8 +52,8 @@ typedef enum {
 	EGOPullRefreshState _state;
     EGOPullRefreshDirection _direction;
     
-//	UILabel *_lastUpdatedLabel;
-//	UILabel *_statusLabel;
+	UILabel *_lastUpdatedLabel;
+	UILabel *_statusLabel;
 	CALayer *_arrowImage;
     SCGIFImageView * _gifArrowImage;
 //	UIActivityIndicatorView *_activityView;
@@ -67,11 +67,13 @@ typedef enum {
     NSTimer * rotateAnimationTimer;
 //    BOOL    isRunningAnimation;
     float degrees;
+    CGFloat RefreshViewBottomHight;
 }
 
 @property(nonatomic,assign) EGOPullRefreshDirection direction;
 @property(nonatomic,assign) id <EGORefreshTableHeaderDelegate> delegate;
 @property BOOL isNeedFixIOS7;
+@property BOOL isAutoLoadMore;;
 @property(nonatomic,copy) NSString * upNormalText;
 @property(nonatomic,copy) NSString * upPullText;
 @property(nonatomic,copy) NSString * upLoadText;
